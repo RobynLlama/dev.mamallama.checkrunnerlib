@@ -4,7 +4,8 @@ namespace dev.mamallama.checkrunnerlib.CheckRunners;
 
 public interface ICheckRunner
 {
-    public string CheckGroupID { get; }
+    string CheckID { get; }
     CheckStatus State { get; }
-    CheckValidation[] RunAllChecks();
+    ICheckRunner[] MyChecks { get; }
+    void RunChecks();
 }

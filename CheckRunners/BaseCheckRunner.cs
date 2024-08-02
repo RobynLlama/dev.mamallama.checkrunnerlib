@@ -2,54 +2,28 @@ using dev.mamallama.checkrunnerlib.Checks;
 
 namespace dev.mamallama.checkrunnerlib.CheckRunners;
 
-public abstract class BaseCheckRunner() : ICheckRunner, ICheck
+public abstract class BaseCheckRunner() : ICheckRunner
 {
-    public abstract string CheckGroupID { get; }
-
+    public abstract string CheckID { get; }
     public CheckStatus State { get; protected set; } = CheckStatus.Pending;
-    protected abstract ICheck[] MyChecks { get; }
+    public abstract ICheckRunner[] MyChecks { get; }
 
-    public virtual CheckValidation[] RunAllChecks()
+    public virtual void RunChecks()
     {
-        CheckValidation[] validation = new CheckValidation[MyChecks.Length];
-
-        for (int i = 0; i < MyChecks.Length; i++)
+        //run every check
+        foreach (var item in MyChecks)
         {
-            validation[i] = MyChecks[i].RunCheck();
-
-            //Scream
-            if (validation[i].Passed == CheckStatus.Fatal)
-                break;
+            item.RunChecks();
+            UpdateState(item.State);
         }
 
-        //Determine State
-        UpdateState(validation);
-
-        return validation;
     }
 
-    protected virtual void UpdateState(CheckValidation[] Validations)
+    protected virtual void UpdateState(CheckStatus IncState)
     {
-        //strict checking
-        foreach (var item in Validations)
+        if ((int)IncState > (int)State)
         {
-            if ((int)item.Passed > (int)State)
-            {
-                State = item.Passed;
-            }
-
-            if (item.Passed == CheckStatus.Fatal)
-            {
-                return;
-            }
+            State = IncState;
         }
-    }
-
-    public virtual CheckValidation RunCheck()
-    {
-        var validations = RunAllChecks();
-        UpdateState(validations);
-
-        return new(CheckGroupID, State, "", validations);
     }
 }

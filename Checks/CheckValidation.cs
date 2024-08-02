@@ -1,6 +1,6 @@
 namespace dev.mamallama.checkrunnerlib.Checks;
 
-public readonly struct CheckValidation
+public class CheckValidation
 {
     public readonly CheckStatus Passed;
     public readonly string CheckName;

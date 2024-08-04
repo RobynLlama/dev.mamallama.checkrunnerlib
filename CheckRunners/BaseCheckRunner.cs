@@ -2,6 +2,10 @@ using dev.mamallama.checkrunnerlib.Checks;
 
 namespace dev.mamallama.checkrunnerlib.CheckRunners;
 
+/// <summary>
+/// A Basic ICheckRunner implementation that already handles running all its
+/// children and updating its own state based on their state.
+/// </summary>
 public abstract class BaseCheckRunner() : ICheckRunner
 {
     public abstract string CheckID { get; }

@@ -8,9 +8,9 @@ namespace dev.mamallama.checkrunnerlib.CheckRunners;
 /// on failure, for example
 /// </summary>
 /// <param name="ErrorLevel"></param>The maximum error level this runner's children can return
-public abstract class BaseCheckRunnerLimited(CheckStatus ErrorLevel = CheckStatus.Fatal) : BaseCheckRunner
+public abstract class BaseCheckRunnerLimited() : BaseCheckRunner
 {
-    protected CheckStatus ErrorLevel = ErrorLevel;
+    public CheckStatus ErrorLevel { get; init; } = CheckStatus.Fatal;
 
     protected override void UpdateState(CheckStatus IncState)
     {
